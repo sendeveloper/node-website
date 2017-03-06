@@ -1,0 +1,80 @@
+{{#if results.target}}
+    <div class="row">
+        <h3>
+            <strong>{{results.region}} Project Updates</strong>
+        </h3>
+        {{#each results.target}}
+            <section class="widget">
+                <strong><a  href="../c/project?project={{project._id}}" target="_blank">
+                    {{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}
+                </a></strong>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td colspan="1">
+                                {{#if highlights}}
+                                    {{#each highlights}}
+                                        <strong>FERC </strong> {{formatMongoDate this.document_date}} -
+                                        {{#if this.impact}}
+                                            <a href="../si_ferc/highlight?highlight_id={{this._id}}" target="_blank">
+                                                {{#each this.impact}}
+                                                    <strong>{{this.impact}}</strong>
+                                                {{/each}}
+                                            </a><br>
+                                            {{this.summary}}<br>
+                                        {{else}}
+                                            <a href="../si_ferc/highlight?highlight_id={{this._id}}" target="_blank">
+                                                <strong>General Update</strong>
+                                            </a><br>
+                                            {{this.summary}}<br>
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+                                {{#if snippets}}
+                                    {{#each snippets}}
+                                        <strong>SNIPPET </strong> {{formatMongoDate this.ORIGINAL.ARTICLE_DATE}}
+                                        <a href="../c/snippet?snippet_id={{this._id}}" target="_blank"><strong>{{this.NCO_SNIPPET_TITLE}}</strong></a><br>
+                                        {{this.NCO_SNIPPET_BODY}}<br>
+                                    {{/each}}
+                                {{/if}}
+                                {{#if changeLogs.formattedItems}}
+                                    <strong><a  href="../c/project?project={{project._id}}" target="_blank">Key Project Updates</a></strong><br>
+                                    =concatenate(
+                                    {{#each changeLogs.formattedItems}}
+                                        {{#ifCond @index ">" 0}}
+                                            char(10)&
+                                        {{/ifCond}}
+                                        "<strong>{{formatMongoDate DATE}} - {{ITEM}}</strong>"&char(13),
+                                        char(10)&"Updated: {{checkDateAndFormat UPDATE}} - Previous: {{checkDateAndFormat ORIGINAL}}"&char(13),
+                                    {{/each}}
+                                    )
+                                {{/if}}
+                            </td>
+                            <td colspan="1" rowspan="4">
+                                =concatenate(
+                                {{#if project.PROJECT_STATUS_ID}}
+                                    "<strong>Project Status</strong> - {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}"&char(13),
+                                {{/if}}
+                                {{#if project.CAPACITY.PIPELINE}}
+                                    char(10)&"<strong>Pipeline Capacity</strong> - {{numberWithCommas project.CAPACITY.PIPELINE.VOLUME}} {{project.CAPACITY.PIPELINE.UNITS.UNIT_DESC}}"&char(13),
+                                {{/if}}
+                                {{#if project.COST.VALUE}}
+                                    char(10)&"<strong>Estimated Project Cost</strong> - {{numberWithCommas project.COST.VALUE}} {{project.COST.UNITS.UNIT_DESC}}"&char(13),
+                                {{/if}}
+                                {{#if project.COMPLETION_DATE}}
+                                    char(10)&"<strong>Completion Date</strong> - {{formatMongoDate project.COMPLETION_DATE}}"&char(13),
+                                {{/if}}
+                                {{#if project.REGION_ID}}
+                                    char(10)&"<strong>Region</strong> - {{project.REGION_ID.REGION_NAME}}"&char(13),
+                                {{/if}}
+                                )
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        {{/each}}
+    </div>
+{{/if}}

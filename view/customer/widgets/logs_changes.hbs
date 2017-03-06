@@ -1,0 +1,29 @@
+{{#unless results.message}}
+{{!--<div class="col-md-12 widget-container ">--}}
+    {{#if results.formattedItems.length}}
+        <section class="widget">
+            <h3>{{results.collection}} Updates</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Item</th>
+                    <th>Previous Entry</th>
+                    <th>Updated Entry</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each results.formattedItems}}
+                    <tr>
+                        <td>{{formatMongoDate DATE}}</td>
+                        <td>{{ITEM}}</td>
+                        <td>{{checkDateAndFormat ORIGINAL}}</td>
+                        <td>{{checkDateAndFormat UPDATE}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </section>
+    {{/if}}
+{{!--</div>--}}
+{{/unless}}

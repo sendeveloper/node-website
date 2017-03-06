@@ -1,0 +1,511 @@
+<div class="body customer-buffer">
+    <section>
+        <div class="body">
+            <div id="news-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content modal-links">
+                        <div id="news-content"></div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- news-modal -->
+        </div>
+    </section>
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="page-title">
+                <span class="fw-semi-bold">
+                    {{results.entities.0.ENTITY_NAME}}
+                    {{#if if_editor}}
+                        <a href="../editorial/entities?entity_id={{results.entities.0._id}}" target="_blank"><span class="small">(edit)</span></a>
+                    {{/if}}
+                </span>
+            </h3>
+        </div>
+        <div class="col-md-6">
+            <div class="div-75-right">
+                <span class="label-color size-12">Search Entities:</span> <input type="hidden" id="query-entities-select" name="ENTITY_ID" class="search-50"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        {{!-- Entity Section --}}
+        <div class="col-md-4">
+            <section class="widget">
+                {{#if results.entities.0.ENTITY_DESC}}
+                    <h4 class="item-heading">Description</h4>
+                    <span class="snippet-body">
+                        {{results.entities.0.ENTITY_DESC}}
+                    </span>
+                {{/if}}
+                {{#if results.entities.0.WEBSITE}}
+                    <h4 class="item-heading">Website</h4>
+                    <a href="{{results.entities.0.WEBSITE}}" target="_blank">{{truncate results.entities.0.WEBSITE 40}}</a>
+                {{/if}}
+                {{#if results.entities.0.OPERATIONAL_REGIONS}}
+                    <h4 class="item-heading">Operational Regions</h4>
+                    {{#each results.entities.0.OPERATIONAL_REGIONS}}
+                        <ol>
+                            <li>
+                                {{this.REGION_NAME}}
+                            </li>
+                        </ol>
+                    {{/each}}
+                    <h4 class="item-heading">Financial Data</h4>
+                    {{#each results.entitiesTickers}}
+                        {{{googleFinance EXCH_ID.EXCH_SHORT COMPANY_TICKER}}}<br>
+                    {{/each}}
+                {{/if}}
+                {{#if results.entitiesTickers.length}}
+                    <h4 class="item-heading">Tickers:</h4>
+                    {{#each results.entitiesTickers}}
+                        <ol>
+                            <li>
+                                {{this.COMPANY_TICKER}} - {{this.EXCH_ID.EXCH_NAME}}<br>
+                            </li>
+                        </ol>
+                    {{/each}}
+                    <h4 class="item-heading">Financial Data :</h4>
+                    {{#each results.entitiesTickers}}
+                        {{{googleFinance EXCH_ID.EXCH_SHORT COMPANY_TICKER}}}<br>
+                    {{/each}}
+                {{/if}}
+            </section>
+            {{#if results.investorPresentations}}
+                <section class="widget">
+                    <h4 class="item-heading">Investor Presentations</h4>
+                    {{#each results.investorPresentations}}
+                        <p><a href="{{this.URL}}" target="_blank">{{this.REPORT_NAME}}</a></p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.relatedEntities}}
+                <section class="widget">
+                    <h4 class="item-heading">Related Entities</h4>
+                    {{#each results.relatedEntities}}
+                        <p><a href="../c/entity?entity={{this._id}}" target="_blank">{{this.ENTITY_NAME}}</a></p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.entities.0.COMPETING_ENTITIES}}
+                <section class="widget">
+                    <h4 class="item-heading">Competitors</h4>
+                    {{#each results.entities.0.COMPETING_ENTITIES}}
+                        <p><a href="../c/entity?entity={{this._id}}" target="_blank">{{this.ENTITY_NAME}}</a></p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.directAssets}}
+                <section class="widget">
+                    <h4 class="item-heading">Direct Assets</h4>
+                    {{#each results.directAssets}}
+                        <p><a href="../c/asset?asset={{this._id}}" target="_blank">{{this.ASSET_NAME}}</a></p>
+                        {{#each this.ENTITY_OWNERSHIP.ENTITY_ID}}
+                            {{incDash @index}}
+                            {{this.ENTITY_NAME}}
+                        {{/each}}
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.relatedAssets}}
+                <section class="widget">
+                    <h4 class="item-heading">Related Assets</h4>
+                    {{#each results.relatedAssets}}
+                        <p>
+                            <a href="../c/asset?asset={{this._id}}" target="_blank">{{this.ASSET_NAME}}</a><br>
+                            {{#each this.ENTITY_OWNERSHIP.ENTITY_ID}}
+                                {{incDash @index}}
+                                {{this.ENTITY_NAME}}
+                            {{/each}}
+                        </p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.directProjects}}
+                <section class="widget">
+                    <h4 class="item-heading">Direct Projects</h4>
+                    {{#each results.directProjects}}
+                        <p>
+                            <a href="../c/project?project={{this._id}}" target="_blank">{{this.PROJECT_NAME}}</a><br>
+                            {{#if this.PROJECT_STATUS_ID}}
+                                Status: {{this.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}<br>
+                            {{/if}}
+                        </p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.relatedProjects}}
+                <section class="widget">
+                    <h4 class="item-heading">Related Projects</h4>
+                    {{#each results.relatedProjects}}
+                        <p>
+                            <a href="../c/project?project={{this._id}}" target="_blank">{{this.PROJECT_NAME}}</a><br>
+                            {{#if this.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}
+                                Status: {{this.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}<br>
+                            {{/if}}
+                            Parent Entities:
+                            {{#each this.ENTITY_ID}}
+                                {{incDash @index}}
+                                {{this.ENTITY_NAME}}
+                            {{/each}}
+                        </p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.entities.WEBSITE}}
+                <section class="widget">
+                    <h4 class="item-heading">Website </h4>
+                    <a href="{{results.entities.WEBSITE}}">{{truncate results.entities.WEBSITE 75}}</a><br>
+                </section>
+            {{/if}}
+            {{#if results.firmCommitments}}
+                <section class="widget">
+                    <h4 class="item-heading">Firm Transport Commitments </h4>
+                    {{#each results.firmCommitments}}
+                        <p>
+                            {{#if PROJECT_ID}}
+                                <strong>Project: </strong><a href="../c/project?project={{PROJECT_ID}}" target="_blank">{{PROJECT_NAME}}</a>
+                            {{/if}}
+                            {{#if ASSET_ID}}
+                                <strong>Asset: </strong><a href="../c/ASSET?ASSET={{ASSET_ID}}" target="_blank">{{ASSET_NAME}}</a>
+                            {{/if}}
+                            {{#if ../../if_editor.length}}
+                                <a href="../../editorial/firm_commitments?id={{this._id}}" target="_blank"><span class="small">(edit)</span></a>
+                            {{/if}}
+                            <br>
+                            {{#each this.ENTITIES}}
+                                Firm Commitment: {{ifZero VOLUME}} {{UNIT_ID.UNIT_DESC}}
+                            {{/each}}
+                            <a href="{{results.entities.WEBSITE}}">{{truncate results.entities.WEBSITE 75}}</a><br>
+                        </p>
+                    {{/each}}
+                </section>
+            {{/if}}
+        </div>
+        <div class="col-md-8">
+            {{#if results.fileUploads}}
+                <section class="widget">
+                    <h4 class="item-heading">Key Files</h4>
+                    {{#each results.fileUploads}}
+                        <p><a href="http://{{this.URL}}" target="_blank">{{this.DESC}}</a></p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.directSnippets}}
+                <section class="widget">
+                    <h4 class="item-heading">Snippets</h4>
+                    {{#each results.directSnippets}}
+                        <p><a  data-toggle="modal" data-target="#news-modal" id="{{this._id}}" onclick="launchSnippetModal('{{this._id}}')" >{{formatMongoDate this.ORIGINAL.ARTICLE_DATE}} - {{this.NCO_SNIPPET_TITLE}}</a></p>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.prNewswire.length}}
+                <section class="widget">
+                    <h4 class="item-heading">News Releases</h4>
+                    {{#each results.prNewswire}}
+                        <a data-toggle="modal" data-target="#{{this._id}}">{{formatMongoDate this.date}} - {{this.headline}}</a>
+                        <div class="body" style="color: #080808">
+                            <div id="{{this._id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content modal-links">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                            <h4 class="modal-title" id="myModalLabel"><strong>{{this.headline}}</strong></h4>
+                                            <div class="snippet-h2">
+                                                <div class="snippet-div-left">
+                                                    Source: {{this.source}}
+                                                </div>
+                                                <div class="snippet-div-right">
+                                                    {{#if this.link}}
+                                                        Orignial Article: <a href="{{this.link}}" target="_blank"> {{truncate this.link 25}}</a>
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <span >{{{this.releaseContent}}}</span>
+                                            <div class="snippet-details">
+                                                <div class="snippet-div-left">
+                                                <p>
+                                                    {{#if this.date}}
+                                                        <h5 class="search-result-item-heading">Article Date</h5>
+                                                        {{formatMongoDate this.date}}
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>
+                        </div>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.hedges}}
+                <section class="widget">
+                    <h4 class="item-heading">Hedge Information</h4>
+                    {{#each results.hedges}}
+                        <section class="search-result-item">
+                            <div class="col-sm-12" id="accordion">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <h4 class="item-heading">
+                                            <a  data-toggle="collapse" data-parent="#accordion" href="#{{_id}}" aria-expanded="false">
+                                                {{formatMongoDate REPORT_DATE}} - {{ENTRY_TITLE}}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div id="{{_id}}" class="panel-collapse collapse" aria-expanded="false">
+                                    <div class="row" name="production-section">
+                                        <div class="col-sm-12">
+                                            <p>
+                                                {{#if DESCRIPTION}}<span class="snippet-body">{{DESCRIPTION}}</span>{{/if}}
+                                            </p>
+                                            {{#if FILES}}
+                                                <h4>Files:</h4>
+                                                <ul>
+                                                    {{#each FILES}}
+                                                        <li>
+                                                            <a href="{{URL}}" target="_blank">{{truncate FILENAME}}</a>
+                                                        </li>
+                                                    {{/each}}
+                                                </ul>
+                                            {{/if}}
+                                            {{#if IMG}}
+                                                <h4>Images:</h4>
+                                                {{#each IMG}}
+                                                    <p><img src="{{URL}}" class="div-img"></p>
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.production}}
+                <section class="widget">
+                    <h4 class="item-heading">Production Details</h4>
+                    {{#each results.production}}
+                        <section class="search-result-item">
+                            <div class="col-sm-12" id="accordion">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <h4 class="item-heading">
+                                            <a  data-toggle="collapse" data-parent="#accordion" href="#{{_id}}" aria-expanded="false">
+                                                {{formatMongoDate REPORT_DATE}} - {{ENTRY_TITLE}}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div id="{{_id}}" class="panel-collapse collapse" aria-expanded="false">
+                                    <div class="row" name="production-section">
+                                        <div class="col-sm-12">
+                                            <p>
+                                                {{#if DESCRIPTION}}<span class="snippet-body">{{DESCRIPTION}}</span>{{/if}}
+                                            </p>
+                                            {{#if FILES}}
+                                                <h4 class="item-heading">Files:</h4>
+                                                <ul>
+                                                    {{#each FILES}}
+                                                        <li>
+                                                            <a href="{{URL}}" target="_blank">{{truncate FILENAME}}</a>
+                                                        </li>
+                                                    {{/each}}
+                                                </ul>
+                                            {{/if}}
+                                            {{#if IMG}}
+                                                <h4 class="item-heading">Images:</h4>
+                                                {{#each IMG}}
+                                                    <p><img src="{{URL}}" class="div-img"></p>
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.entitiesTransactions}}
+                <section class="widget">
+                    <h4 class="item-heading">Company Transactions</h4>
+                    {{#each results.entitiesTransactions}}
+                        <div class="body">
+                            <section class="widget">
+                                <h4 class="item-heading"><strong>Date: {{formatMongoDate TRANSACTION_DATE}}<br> Type: {{CATEGORY.CATEGORY}}</strong></h4>
+                                <div class="row">
+                                    <div class="div-12">
+                                        <div class="col-md-3">
+                                            {{#if BUYERS}}
+                                                BUYERS:
+                                                {{#each BUYERS}}
+                                                    <li><a href="entity?entity={{_id}}" target="_blank">{{ENTITY_NAME}}</a></li>
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{#if SELLERS}}
+                                                SELLERS:
+                                                {{#each SELLERS}}
+                                                    <li><a href="entity?entity={{_id}}" target="_blank">{{ENTITY_NAME}}</a></li>
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{#if ASSETS}}
+                                                ASSETS: <br>
+                                                {{#each ASSETS}}
+                                                    <li><a href="asset?asset={{_id}}" target="_blank">{{ASSET_NAME}}</a></li>
+                                                {{/each}}
+                                            {{/if}}
+                                            {{#if PROJECTS}}
+                                                PROJECTS: <br>
+                                                {{#each PROJECTS}}
+                                                    <li><a href="project?project={{_id}}" target="_blank">{{PROJECT_NAME}}</a></li>
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            DETAILS:
+                                            {{#if COST.VALUE}}
+                                                <p>COST: {{COST.VALUE}} {{COST.UNITS.UNIT_DESC}}</p>
+                                            {{/if}}
+                                            {{#if VOLUMES.VALUE}}
+                                                <p>VOLUMES: {{VOLUMES.VALUE}} {{VOLUMES.UNITS.UNIT_DESC}}</p>
+                                            {{/if}}
+                                            {{#if ACRES.VALUE}}
+                                                <p>ACRES: {{ACRES.VALUE}} {{ACRES.UNITS.UNIT_DESC}}</p>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                    <div class="div-12">
+                                        <div class="col-md-6">
+                                            {{#if NOTES}}
+                                                NOTES: <br>
+                                                {{NOTES}}
+                                            {{/if}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{#if REGIONS}}
+                                                REGIONS: <br>
+                                                {{#each REGIONS}}
+                                                    <li>{{REGION_NAME}}</li>
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if results.postgresMetadata}}
+                <section class="widget">
+                    <h4 class="item-heading">Related Data Series</h4>
+                    {{#each results.postgresMetadata}}
+                        <p><a onclick="HighChartMaxPostDateMaxVersion('{{this.METADATA_UUID}}','#target-location', '{{this.MDAT_DESC}}{{#if this.REGION_ID}} - Region: {{this.REGION_ID.0.REGION_NAME}}{{/if}}{{#if this.CMDTY_CLASS_ID}} - Cmdty: {{this.CMDTY_CLASS_ID.0.CMDTY_CLASS}}{{/if}}', '', 'lineDefault','')" >
+                            {{#if this.CMDTY_CLASS_ID}}
+                                {{#each this.CMDTY_CLASS_ID}}
+                                    {{this.CMDTY_CLASS}} -
+                                {{/each}}
+                            {{/if}}
+                            {{this.MDAT_DESC}}
+                            {{#if this.REGION_ID}}
+                                {{#each this.REGION_ID}}
+                                    | {{this.REGION_NAME}}
+                                {{/each}}
+                            {{/if}}
+                        </a></p>
+                    {{/each}}
+                </section>
+                <section>
+                    <div id="target-location"></div>
+                </section>
+            {{/if}}
+            {{!-- State production charts --}}
+            <div id="state-production-chart-div"></div>
+            {{!-- FERC Filings --}}
+            <div id="ferc-highlights-div"></div>
+            <div id="ferc-filings"></div>
+            <div id="ferc-results-div"></div>
+            <div id="ferc-firm-transport-shippers-div"></div>
+            <div id="ferc-firm-transport-agents-div"></div>
+            {{!-- hedges
+            <div>
+                <img class="div-img" src="http://research.criterionrsch.com/img/hedges/Denbury-1Q16.jpg">
+            </div>
+            --}}
+        </div>
+    </div>
+</div>  <!-- closing of div class body -->
+<div id='spinner' class='spinner'></div>
+
+
+<!-- common libraries. required for every page-->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+<!-- Criterion Specific Items-->
+<script type="text/javascript" src="../js/criterion-select.js"></script>
+<script type="text/javascript" src="../js/criterion-charts.js"></script>
+<script type="text/javascript" src="../js/my-folder-widget.js"></script>
+
+<!-- Select2 -->
+<script src="../lib/select2/select2.js"></script>
+
+<!-- Highcharts -->
+<script src="../lib/highcharts/highcharts.4.2.5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $.get('../si_ferc/ferc_highlights?collection=entities&id={{results.entities.0._id}}&daysBack=365&limit=30', function(data) {
+            $('#ferc-highlights-div').html(data);
+        });
+
+        $.get('../c/ferc_documents?collection=entities&id={{results.entities.0._id}}&limit=100', function(data) {
+            $('#ferc-results-div').html(data);
+        });
+
+        $.get('../c/ferc_firm_entity?type=shippers&entityId={{results.entities.0._id}}', function(data) {
+            $('#ferc-firm-transport-shippers-div').html(data);
+        });
+
+        $.get('../c/ferc_firm_entity?type=agents&entityId={{results.entities.0._id}}', function(data) {
+            $('#ferc-firm-transport-agents-div').html(data);
+        });
+
+        $.get('../widgets/production_by_operator?entity_id={{results.entities.0._id}}', function(data) {
+            $('#state-production-chart-div').html(data);
+        });
+
+
+        UniversalSelect2Single('#query-entities-select','ENTITY_NAME','../api/v3/entities','');
+    });
+
+    var $eventSelect = $("#query-entities-select");
+    $eventSelect.on("change", function (e) { redirect("change"); });
+
+    function redirect (name, evt) {
+        var id = document.getElementById("query-entities-select").value;
+        var query = '../c/entity?entity=' + document.getElementById("query-entities-select").value;
+        window.open(query);
+    }
+
+    function launchSnippetModal(id){
+        //alert("This is the launchSnippetModal: " + id);
+        $.get('../c/snippet?snippet_id=' + id + '&render=singleSnippet', function(data) {
+            $('#news-content').html(data);
+            attachMyFoldersHandlers($('#news-content .myfolder-selectors'));
+        });
+    }
+
+
+</script>

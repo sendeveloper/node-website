@@ -1,0 +1,4 @@
+{
+  "verbose": true,
+  "ignore": ["lib/*", "public/*", "views/*", ".idea/*", ".git/*"]
+}

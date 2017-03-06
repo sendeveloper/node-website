@@ -1,0 +1,244 @@
+
+{{#if results}}
+    <section class="widget">
+        <div id="gas-production-chart"></div>
+    </section>
+    <section class="widget">
+        <div id="oil-production-chart"></div>
+    </section>
+    <section class="widget">
+        <div id="cond-production-chart"></div>
+    </section>
+{{/if}}
+
+{{!--
+<!-- common libraries -->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+
+
+<!-- Highcharts -->
+<script src="../lib/highcharts/highcharts.4.2.5.min.js"></script>
+--}}
+
+
+<script>
+    $(document).ready(function($){
+        chartSummary('', '#gas-production-chart');
+    });
+
+    // highcharts items
+    function chartSummary(query, target){
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','
+            }
+        });
+        var series = {{{stringifyJson results}}};
+
+        var newData = [];
+        var gasProduction = [];
+        var oilProduction = [];
+        var condProduction = [];
+
+        var newSeries= [];
+        var gasSeries = [];
+        var oilSeries = [];
+        var condSeries = [];
+
+        series.forEach(function(d){
+            d.data.forEach(function(i){
+                var testDate = new Date(i.production_month);
+                gasProduction.push([Date.UTC(testDate.getFullYear(), testDate.getMonth(),1), Math.round(i.gas_avg_daily_production)]);
+                oilProduction.push([Date.UTC(testDate.getFullYear(), testDate.getMonth(),1), Math.round(i.oil_avg_daily_production)]);
+                condProduction.push([Date.UTC(testDate.getFullYear(), testDate.getMonth(),1), Math.round(i.condensate_avg_daily_production)]);
+            });
+            gasSeries.push({
+                name : d.name
+                , type : "line"
+                , data : gasProduction
+            });
+            oilSeries.push({
+                name : d.name
+                , type : "line"
+                , data : oilProduction
+            });
+            condSeries.push({
+                name : d.name
+                , type : "line"
+                , data : condProduction
+            });
+
+        });
+        //console.log("This is the newSeries: " + JSON.stringify(newSeries));
+
+        $('#gas-production-chart').highcharts({
+            series: gasSeries,
+            xAxis: {
+                type: 'datetime'
+                , autoRotation : 90
+            },
+            yAxis: {
+                visible: true
+                , title : {
+                    text : "Natural Gas Production in Mmcf/d"  // + data.units
+                },
+                labels : {
+                    formatter: function() {
+                        result = this.value;
+                        if (this.value > 1000) { result = Math.floor(this.value / 1000)}
+                        return result.toFixed(1);
+                    }
+                }
+            },
+            tooltip:{
+                enabled: true
+                , valueSuffix: " MMcf/d"
+                /*
+                                    , formatter: function() {
+                                        result = this.y;
+                                        if (this.y > 1000) { result = Math.floor(this.y / 1000)}
+                                        return result.toFixed(1) + " " + data.units;
+                                    }
+                                    , dateTimeLabelFormats : {
+                                        month:"%B %Y"
+                                    }
+                                    , headerFormat : 'New Capacity - '
+                */
+            },
+            title: {
+                text: "Natural Gas Production by State"
+            },
+            subtitle: {
+                text: ""
+            },
+            legend: {
+                enabled: true
+            },
+            credits : {
+                text : "Source: Criterion Research"
+                , position: {
+                    align : 'left'
+                    , verticalAlign: 'bottom'
+                    , x: 10
+                    , y: -5
+                }
+                , href: "https://criterionrsch.com"
+            }
+
+        });
+
+        $('#oil-production-chart').highcharts({
+            series: oilSeries,
+            xAxis: {
+                type: 'datetime'
+                , autoRotation : 90
+            },
+            yAxis: {
+                visible: true
+                , title : {
+                    text : "Crude Oil Production in Bbls/d"  // + data.units
+                },
+                labels : {
+                    formatter: function() {
+                        result = this.value;
+                        if (this.value > 1000) { result = Math.floor(this.value / 1000)}
+                        return result.toFixed(1);
+                    }
+                }
+            },
+            tooltip:{
+                enabled: true
+                , valueSuffix: " Bbls/d"
+                /*
+                                    , formatter: function() {
+                                        result = this.y;
+                                        if (this.y > 1000) { result = Math.floor(this.y / 1000)}
+                                        return result.toFixed(1) + " " + data.units;
+                                    }
+                                    , dateTimeLabelFormats : {
+                                        month:"%B %Y"
+                                    }
+                                    , headerFormat : 'New Capacity - '
+                */
+            },
+            title: {
+                text: "Crude Oil Production by State"
+            },
+            subtitle: {
+                text: ""
+            },
+            legend: {
+                enabled: true
+            },
+            credits : {
+                text : "Source: Criterion Research"
+                , position: {
+                    align : 'left'
+                    , verticalAlign: 'bottom'
+                    , x: 10
+                    , y: -5
+                }
+                , href: "https://criterionrsch.com"
+            }
+
+        });
+
+        $('#cond-production-chart').highcharts({
+            series: condSeries,
+            xAxis: {
+                type: 'datetime'
+                , autoRotation : 90
+            },
+            yAxis: {
+                visible: true
+                , title : {
+                    text : "Condensate Production in Bbls/d"  // + data.units
+                },
+                labels : {
+                    formatter: function() {
+                        result = this.value;
+                        if (this.value > 1000) { result = Math.floor(this.value / 1000)}
+                        return result.toFixed(1);
+                    }
+                }
+            },
+            tooltip:{
+                enabled: true
+                , valueSuffix: " Bbls/d"
+                /*
+                                    , formatter: function() {
+                                        result = this.y;
+                                        if (this.y > 1000) { result = Math.floor(this.y / 1000)}
+                                        return result.toFixed(1) + " " + data.units;
+                                    }
+                                    , dateTimeLabelFormats : {
+                                        month:"%B %Y"
+                                    }
+                                    , headerFormat : 'New Capacity - '
+                */
+            },
+            title: {
+                text: "Condensate Production by State"
+            },
+            subtitle: {
+                text: ""
+            },
+            legend: {
+                enabled: true
+            },
+            credits : {
+                text : "Source: Criterion Research"
+                , position: {
+                    align : 'left'
+                    , verticalAlign: 'bottom'
+                    , x: 10
+                    , y: -5
+                }
+                , href: "https://criterionrsch.com"
+            }
+
+        });
+    }
+
+
+</script>

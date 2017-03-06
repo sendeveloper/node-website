@@ -1,0 +1,6 @@
+{
+  "fercScheduler": {
+    "hour": [4,15,18,22]
+    ,"minute": [30]
+  }
+}

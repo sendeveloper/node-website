@@ -1,0 +1,114 @@
+<div class="content container customer-buffer">
+    <div class="col-md-9">
+        <h2 class="page-title">Weekly {{results.defaults.target}} Project Updates - {{formatDate results.endDate "M/D/YYYY"}}</h2>
+    </div>
+    <div class="col-md-3" id="publisher-div">
+        <div class="form-group">
+            <label class="col-md-3 label-color">Find Date</label>
+            <div class="col-md-9">
+                <input type="date" id="query-highlight-date" name="date" class="form-control" onchange="dateChange()" value="{{results.today}}">
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="col-md-12">
+            <section class="widget">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Highlights / Snippets</th>
+                            <th>Impact</th>
+                            <th>Date</th>
+                            <th>Region</th>
+                            <th>My Folders</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each results.items}}
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <a href="../c/project?project={{this.PROJECT_ID}}" target="_blank">{{this.PROJECT_NAME}}</a>
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        <a href="../si_ferc/highlight?highlight_id={{this._id}}" target="_blank">{{this.summary}}</a>
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        <a href="../c/snippet?snippet_id={{this._id}}" target="_blank">{{this.NCO_SNIPPET_TITLE}}</a>
+                                    {{/ifCond}}
+                                </td>
+                                <td>
+                                    {{impact}}
+                                </td>
+                                <td>
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td>
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                                <td>
+                                    {{#ifCond source "==" "Snippets"}}
+                                        <input type="hidden" id="my-folders-{{_id}}" class="myfolder-selectors" style="width:100%" value="" data-item-id="{{_id}}" data-item-ref="snippets" data-token="{{../../csrfToken}}" />
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        <input type="hidden" id="my-folders-{{_id}}" class="myfolder-selectors" style="width:100%" value="" data-item-id="{{_id}}" data-item-ref="ferc_highlights" data-token="{{../../csrfToken}}" />
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+<div id='spinner' class='spinner'></div>
+
+
+<!-- common libraries -->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+<!-- Criterion Specific Items-->
+<script type="text/javascript" src="../js/criterion-charts.js"></script>
+<script type="text/javascript" src="../js/criterion-select.js"></script>
+<script type="text/javascript" src="../js/my-folder-widget.js"></script>
+
+<!-- Select2 -->
+<script src="../lib/select2/select2.js"></script>
+
+
+<script>
+    $(document).ready(function($) {
+        getPath();
+        {{#each results.items}}
+            attachMyFoldersHandlers($('#my-folders-{{_id}}'));
+        {{/each}}
+    });
+
+    function getPath(){
+        var search;
+        if (window.location.search != ""){
+            // si_projects/midstream_publisher
+            search = window.location.href + "&publisher=true"
+        } else {
+            search = window.location.href + "?publisher=true"
+        }
+        search = search.replace("weekly_projects", "midstream_publisher");
+        document.getElementById("pub_id").href=search;
+    }
+
+
+    function dateChange(){
+        var newDate = document.getElementById("query-highlight-date").value;
+        var url = window.location.origin + window.location.pathname + "?endDate=" + newDate;
+        window.location.replace(url);
+    }
+
+
+</script>
+
+

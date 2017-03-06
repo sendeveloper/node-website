@@ -1,0 +1,110 @@
+{{#if results.target}}
+    <section class="search-result-item">
+        <div class="col-sm-12" id="accordion">
+            <div class="row">
+                <h3 class="search-result-item-heading-article">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#{{replaceChars results.region "-"}}-accordion" aria-expanded="false">{{results.region}} Project Updates </a>
+                    {{#if if_editor}}
+                        <small>
+                            <a href="../../{{results.publisher.dir}}?region={{results.publisher.region}}&endDate={{results.publisher.endDate}}&publisher=true" target="_blank">(publisher)</a>
+                        </small>
+                    {{/if}}
+                </h3>
+            </div>
+            <div id="{{replaceChars results.region "-"}}-accordion" class="panel-collapse collapse" aria-expanded="false">
+                {{#each results.target}}
+                    <section class="widget">
+                        <h4 class="search-result-item-heading-article">
+                            <a  href="../c/project?project={{project._id}}" target="_blank">
+                                <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                            </a>
+                            {{#if ../if_editor}}
+                                <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                            {{/if}}
+                        </h4>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4 class="search-result-item-heading" style="padding-top: 5px;">FERC Highlights and Snippets</h4>
+                                {{#if highlights}}
+                                    {{#each highlights}}
+                                        <section class="changeLogs">
+                                            <strong>FERC </strong>
+                                            {{formatMongoDate this.document_date}} -
+                                            {{#if this.impact}}
+                                                <a href="../si_ferc/highlight?highlight_id={{this._id}}" target="_blank">
+                                                    {{#each this.impact}}
+                                                        <strong>{{this.impact}}</strong>
+                                                    {{/each}}
+                                                </a><br>
+                                                {{this.summary}}
+                                            {{else}}
+                                                <a href="../si_ferc/highlight?highlight_id={{this._id}}" target="_blank">
+                                                    <strong>General Update</strong>
+                                                </a><br>
+                                                {{this.summary}}
+                                            {{/if}}
+                                        </section>
+                                    {{/each}}
+                                {{/if}}
+                                {{#if snippets}}
+                                    {{#each snippets}}
+                                        <section class="changeLogs">
+                                            <strong>SNIPPET </strong>
+                                            {{formatMongoDate this.ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{this._id}}" target="_blank"><strong>{{this.NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <p>{{this.NCO_SNIPPET_BODY}}</p>
+                                        </section>
+                                    {{/each}}
+                                {{/if}}
+                            </div>
+                            <div class="col-sm-3">
+                                {{#if changeLogs.formattedItems}}
+                                    <h4 class="search-result-item-heading">Key Project Updates</h4>
+                                    {{#each changeLogs.formattedItems}}
+                                        <section class="changeLogs">
+                                            <strong>{{formatMongoDate DATE}} - {{ITEM}}</strong><br>
+                                            Updated: {{checkDateAndFormat UPDATE}}<br>
+                                            Previous: {{checkDateAndFormat ORIGINAL}}
+                                        </section>
+                                    {{/each}}
+                                {{/if}}
+                            </div>
+                            <div class="col-sm-3 ">
+                                <h4 class="search-result-item-heading">Key Project Details</h4>
+                                {{#if project.PROJECT_STATUS_ID}}
+                                    <p>
+                                    <h5 class="search-result-item-heading">Project Status</h5>
+                                    {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}
+                                    </p>
+                                {{/if}}
+                                {{#if project.CAPACITY.PIPELINE}}
+                                    <p>
+                                    <h5 class="search-result-item-heading">Pipeline Capacity</h5>
+                                    {{numberWithCommas project.CAPACITY.PIPELINE.VOLUME}} {{project.CAPACITY.PIPELINE.UNITS.UNIT_DESC}}
+                                    </p>
+                                {{/if}}
+                                {{#if project.COST.VALUE}}
+                                    <p>
+                                    <h5 class="search-result-item-heading">Estimated Project Cost</h5>
+                                    {{numberWithCommas project.COST.VALUE}} {{project.COST.UNITS.UNIT_DESC}}
+                                    </p>
+                                {{/if}}
+                                {{#if project.COMPLETION_DATE}}
+                                    <p>
+                                    <h5 class="search-result-item-heading">Completion Date</h5>
+                                    {{formatMongoDate project.COMPLETION_DATE}}
+                                    </p>
+                                {{/if}}
+                                {{#if project.REGION_ID}}
+                                    <p>
+                                    <h5 class="search-result-item-heading">Region</h5>
+                                    {{project.REGION_ID.REGION_NAME}}
+                                    </p>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </section>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+{{/if}}

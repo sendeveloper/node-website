@@ -1,0 +1,166 @@
+<div class="content container customer-buffer">
+    <div class="col-md-10">
+        <h2 class="page-title">{{results.defaults.target}} Highlights - {{formatMongoDate results.defaults.date}}</h2>
+    </div>
+    <div class="col-md-2">
+        {{#if if_editor}}<small><a href="{{results.defaults.publisher}}">(publisher)</a></small>{{/if}}
+    </div>
+    <div class="body">
+        <div class="col-md-6">
+            {{#each results.getCommentary}}
+                {{#if this.COMMENTARY}}
+                    <section class="widget commentary">
+                        <h3>{{../../results.defaults.target}} Commentary</h3>
+                        {{this.COMMENTARY}}
+                    </section>
+                {{/if}}
+            {{/each}}
+            {{#if results.getSnippets}}
+                <section class="widget">
+                    <h3>Criterion News</h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            {{#if ../../results.getPublisher}}
+                            {{else}}
+                                <th></th>
+                                <th>Snippet Title</th>
+                            {{/if}}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.getSnippets}}
+                            <tr>
+                                {{#if ../../../results.getPublisher}}
+                                {{else}}
+                                    <td>
+                                        {{inc @index}}
+                                    </td>
+                                {{/if}}
+                                <td>
+                                    {{formatMongoDate this.QC.CREATION_DATE}} - <strong>{{this.NCO_SNIPPET_TITLE}}</strong><br>
+                                    <a href="../c/snippet?snippet_id={{this._id}}" target="_blank">{{truncate this.NCO_SNIPPET_BODY 125}}</a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.getPressReleases}}
+                <section>
+                    <section class="widget">
+                        <h3>Press Releases</h3>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                {{#if ../results.getPublisher}}
+                                {{else}}
+                                    <th></th>
+                                    <th>Title</th>
+                                {{/if}}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each results.getPressReleases}}
+                                <tr>
+                                    {{#if ../../results.getPublisher}}
+                                    {{else}}
+                                        <td>
+                                            {{inc @index}}
+                                        </td>
+                                    {{/if}}
+                                    <td class="hidden-xs">
+                                        {{!-- rss feeds --}}
+                                        {{formatMongoDate this.date}} - <strong>{{this.source}}</strong>-
+                                        <a href="{{this.link}}" target="_blank">{{this.title}}</a>
+                                        {{!-- Pr Newswires --}}
+                                        <a href="{{this.link}}" target="_blank">{{this.headline}}</a><br>
+                                        <p>{{{truncate this.abstract 200}}}</p>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+            {{/if}}
+        </div>
+        {{!-- Split between the columns --}}
+        <div class="col-md-6">
+            {{#if results.getFercFilings}}
+                <section class="widget">
+                    <h3>Ferc Documents</h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            {{#if ../../results.getPublisher}}
+                            {{else}}
+                                <th></th>
+                                <th>Author/Affil - Document Type <br>
+                                    Description
+                                </th>
+                            {{/if}}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.getFercFilings}}
+                            <tr>
+                                {{#if ../../../results.getPublisher}}
+                                {{else}}
+                                    <td>
+                                        {{inc @index}}
+                                    </td>
+                                {{/if}}
+                                <td>
+                                    {{formatMongoDate this.document_date}} - <strong>{{this.applicants}} - {{this.docket}}</strong><br>
+                                    Document Type: {{this.document_type}}<br>
+                                    <p>{{this.description}}</p>
+
+                                    <p>
+                                        {{#if this.docket}}
+                                            <br>
+                                            Author: {{this.author_affil}}<br>
+                                            Docket Applicants: {{this.applicants}}<br>
+                                            Docket Description: {{this.docket_description}}
+                                        {{/if}}
+                                    </p>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+        </div>
+    </div>
+    <div class="body">
+        <div class="col-md-6">
+        </div>
+    </div>
+</div>
+
+<!-- common libraries -->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+<!-- select2 -->
+<script src="../lib/select2/select2.js"></script>
+
+<!-- Criterion Specific Items-->
+<script type="text/javascript" src="../js/criterion-select.js"></script>
+<script type="text/javascript" src="../js/criterion-charts.js"></script>
+
+<!-- d3 and related items -->
+<script type="text/javascript" src="../js/criterion-graph-logic.js"></script>
+
+<!-- data tables -->
+<script src="../lib/datatables/jquery.dataTables.min.js"></script>
+
+
+
+<script name="General">
+    $(document).ready(function($){
+
+    });
+</script>

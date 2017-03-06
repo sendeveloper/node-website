@@ -1,0 +1,141 @@
+<style>
+    .snippet-body {
+        white-space: pre-line;
+    }
+</style>
+
+
+<div class="customer-buffer">
+    <h2 class="page-title">{{results.defaults.target}} Highlights - {{#each results.getCommentary}}{{formatMongoDate this.QC.RELEASE_DATE}}{{/each}}</h2>
+    <div class="body">
+        <div class="col-md-6">
+            {{#each results.getCommentary}}
+                {{#if this.COMMENTARY}}
+                    <section class="widget">
+                        <h3 class="item-heading">{{../../results.defaults.target}} Commentary</h3>
+                        <span class="snippet-body">{{this.COMMENTARY}}</span>
+                    </section>
+                {{/if}}
+                {{#if this.SNIPPET_ID}}
+                    <section class="widget">
+                        <h3 class="item-heading">Criterion News</h3>
+                        <table class="table table-striped">
+                            <tbody>
+                            {{#each this.SNIPPET_ID}}
+                                <tr>
+                                    {{#if ../../../results.getPublisher.publisher}}
+                                    {{else}}
+                                        <td>
+                                            {{inc @index}}
+                                        </td>
+                                    {{/if}}
+                                    <td>
+                                        {{#if ../../../results.getPublisher.publisher}}&#8226 {{/if}}
+                                        <strong><a href="../c/snippet?snippet_id={{this._id}}" target="_blank">{{this.NCO_SNIPPET_TITLE}}</a></strong> -
+                                        {{truncate this.NCO_SNIPPET_BODY 125}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </section>
+                {{/if}}
+            {{/each}}
+            {{#if results.getPressReleases}}
+                <section>
+                    <section class="widget">
+                        <h3 class="item-heading">Press Releases</h3>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                {{#if ../results.getPublisher.publisher}}
+                                {{else}}
+                                    <th></th>
+                                    <th>Title</th>
+                                {{/if}}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each results.getPressReleases}}
+                                <tr>
+                                    {{#if ../../results.getPublisher.publisher}}
+                                    {{else}}
+                                        <td>
+                                            {{inc @index}}
+                                        </td>
+                                    {{/if}}
+                                    <td class="hidden-xs">
+                                        {{!-- rss feeds --}}
+                                        {{#if ../../results.getPublisher.publisher}}&#8226 {{/if}}
+                                        <strong><a href="{{this.link}}" target="_blank">{{friendlyFeeds this.source}}</a></strong> -
+                                        {{this.title}}
+                                        {{!-- Pr Newswires --}}
+                                        {{this.headline}}
+                                        {{truncate this.abstract 200}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+            {{/if}}
+        </div>
+    {{!-- Split between the columns --}}
+        <div class="col-md-6">
+            {{#if results.getCommentary.IMG}}
+                {{#each results.getCommentary.IMG}}
+                    <section class="widget">
+                        <img src="{{SRC}}" alt="{{ALT}}">
+                    </section>
+                {{/each}}
+            {{/if}}
+            <div id="ferc-highlights-div"></div>
+            <div id="ferc-results-div"></div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="col-md-6">
+        </div>
+    </div>
+</div>
+{{#if if_editor}}<small><a href="{{results.defaults.publisher}}">(publisher)</a></small><br><br>{{/if}}
+
+
+<!-- common libraries -->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+
+<script>
+    $(document).ready(function($) {
+        getFercHighlights();
+    });
+
+
+    function getFercHighlights(){
+        switch ("{{results.defaults.target}}"){
+            case "Natural Gas":
+                if ("{{results.getPublisher.publisher}}" == "true"){
+                    $.get('../si_ferc/ferc_highlights?targetDate={{formatMongoDate results.getCommentary.0.QC.RELEASE_DATE}}&publisher=true', function(data) {
+                        $('#ferc-highlights-div').html(data);
+                    });
+                    $.get('../si_ferc/day_results?targetDate={{formatMongoDate results.getCommentary.0.QC.RELEASE_DATE}}&type=projects&publisher=true', function(data) {
+                        $('#ferc-results-div').html(data);
+                    });
+                } else {
+                    $.get('../si_ferc/ferc_highlights?targetDate={{formatMongoDate results.getCommentary.0.QC.RELEASE_DATE}}', function(data) {
+                        $('#ferc-highlights-div').html(data);
+                    });
+                    $.get('../si_ferc/day_results?targetDate={{formatMongoDate results.getCommentary.0.QC.RELEASE_DATE}}&type=projects', function(data) {
+                        $('#ferc-results-div').html(data);
+                    });
+                }
+                break;
+        }
+
+    }
+
+</script>
+
+

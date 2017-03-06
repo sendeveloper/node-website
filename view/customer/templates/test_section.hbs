@@ -1,0 +1,12 @@
+<section class="widget" id="dash-reports-widget">
+    {{#each snips}}
+        <div >
+            <tr>
+                <th><b>{{title}}</b></th>
+                <th><a href="{{url}}">{{source_desc}}</a></th>
+            </tr>
+            <div><span ></span></div>
+            <div><span >{{cat_class}} {{sub_cat_class}} Date Posted : {{post_date}}</span></div>
+        </div>
+    {{/each}}
+</section>

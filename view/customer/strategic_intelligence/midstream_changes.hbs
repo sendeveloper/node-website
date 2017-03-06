@@ -1,0 +1,400 @@
+    {{#each results.groupChangedItems}}
+        <div class="col-sm-12" id="accordion">
+            <div class="row">
+                <div id="northeast">
+                </div>
+                <div id="southeast">
+                    {{#if southeast}}
+                        {{stringifyJson southeast}}
+                        <h3>Southeast Project Updates</h3>
+                        {{#each southeast}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                                    <span class="">
+                                                        <p>{{NCO_SNIPPET_BODY}}</p>
+                                                    </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                <div id="southCentral">
+                    {{#if southCentral}}
+                        {{stringifyJson southeast}}
+                        <h3>South Central Project Updates</h3>
+                        {{#each southCentral}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <span class="">
+                                                <p>{{NCO_SNIPPET_BODY}}</p>
+                                            </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                <div id="midwest">
+                    {{#if midwest}}
+                        {{stringifyJson midwest}}
+                        <h3>Midwest Project Updates</h3>
+                        {{#each midwest}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <span class="">
+                                                <p>{{NCO_SNIPPET_BODY}}</p>
+                                            </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                <div id="rockies">
+                    {{#if rockies}}
+                        {{stringifyJson rockies}}
+                        <h3>Rockies Project Updates</h3>
+                        {{#each rockies}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <span class="">
+                                                <p>{{NCO_SNIPPET_BODY}}</p>
+                                            </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                <div id="west">
+                    {{#if west}}
+                        {{stringifyJson west}}
+                        <h3>west Project Updates</h3>
+                        {{#each west}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <span class="">
+                                                <p>{{NCO_SNIPPET_BODY}}</p>
+                                            </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                <div id="canada">
+                    {{#if canada}}
+                        {{stringifyJson canada}}
+                        <h3>Canadian Project Updates</h3>
+                        {{#each canada}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <span class="">
+                                                <p>{{NCO_SNIPPET_BODY}}</p>
+                                            </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                <div id="mexico">
+                    {{#if mexico}}
+                        {{stringifyJson mexico}}
+                        <h3>Mexician Project Updates</h3>
+                        {{#each Mexico}}
+                            <section class="widget">
+                                <h4 class="search-result-item-heading-article">
+                                    <a href="../c/project?project={{project._id}}" target="_blank">
+                                        <strong>{{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}</strong>
+                                    </a>
+                                    <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                                    {{#if ../if_editor}}
+                                        <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                    {{/if}}
+                                </h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>FERC Highlights and Snippets</h4>
+                                        {{#if highlights}}
+                                            {{#each highlights}}
+                                                <section class="changeLogs">
+                                                    <strong>FERC </strong>
+                                                    {{formatMongoDate document_date}} -
+                                                    {{#if impact}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            {{#each impact}}
+                                                                <strong>{{impact}}</strong>
+                                                            {{/each}}
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{else}}
+                                                        <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                            <strong>General Update</strong>
+                                                        </a><br>
+                                                        {{summary}}
+                                                    {{/if}}
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                        {{#if snippets}}
+                                            {{#each snippets}}
+                                                <section class="changeLogs">
+                                                    <strong>SNIPPET </strong>
+                                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                            <span class="">
+                                                <p>{{NCO_SNIPPET_BODY}}</p>
+                                            </span>
+                                                </section>
+                                            {{/each}}
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </section>
+                        {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    {{/each}}

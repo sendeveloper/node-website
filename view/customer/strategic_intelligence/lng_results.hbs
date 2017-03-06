@@ -1,0 +1,217 @@
+<h4><strong>Completion Date - Project Name - Project Status</strong></h4>
+{{#each results.getKeyProjects}}
+    <section class="search-result-item">
+        <div class="col-sm-12" id="accordion">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h4 class="search-result-item-heading-article">
+                        <a  data-toggle="collapse" data-parent="#accordion" href="#{{../results.region}}-{{project._id}}" aria-expanded="false">
+                            {{#if project.COMPLETION_DATE}}{{formatMongoDate project.COMPLETION_DATE}} - {{/if}}{{project.PROJECT_NAME}}
+                        </a>
+                        <span class="small">{{#if project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}- Status: {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}{{/if}}</span>
+                        {{#if ../if_editor}}
+                            <a href="../../editorial/projects?project_id={{project._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                        {{/if}}
+                    </h4>
+                </div>
+            </div>
+            <div id="{{../results.region}}-{{project._id}}" class="panel-collapse collapse" aria-expanded="false">
+                <div class="row" name="production-section" style="padding-top: 5px;">
+                    <div class="col-sm-6" >
+                        {{#if highlights}}
+                            <h4 class="search-result-item-heading">FERC Highlights</h4>
+                            <ul>
+                                {{#each highlights}}
+                                    <li>
+                                        {{formatMongoDate document_date}} -
+                                        {{#if impact}}
+                                            <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                {{#each impact}}
+                                                    <strong>{{impact}}</strong>
+                                                {{/each}}
+                                            </a><br>
+                                            {{summary}}
+                                        {{else}}
+                                            <a href="../si_ferc/highlight?highlight_id={{_id}}" target="_blank">
+                                                <strong>General Update</strong>
+                                            </a><br>
+                                            {{summary}}
+                                        {{/if}}
+                                    </li><br>
+                                {{/each}}
+                            </ul>
+                        {{/if}}
+                        {{#if snippets}}
+                            <h4 class="search-result-item-heading">Snippets</h4>
+                            <ul>
+                                {{#each snippets}}
+                                    {{formatMongoDate ORIGINAL.ARTICLE_DATE}}  <a href="../c/snippet?snippet_id={{_id}}" target="_blank"><strong>{{NCO_SNIPPET_TITLE}}</strong></a><br>
+                                        <span class="">
+                                            <p>{{NCO_SNIPPET_BODY}}</p>
+                                        </span>
+                                {{/each}}
+                            </ul>
+                        {{/if}}
+
+                        <strong><a href="../c/project?project={{project._id}}" target="_blank">...View Project Details...</a></strong>
+                    </div>
+                    <div class="col-sm-3 ">
+                        {{#if project.PROJECT_STATUS_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Project Status</h5>
+                            {{project.PROJECT_STATUS_ID.PROJECT_STATUS_DESC}}
+                            </p>
+                        {{/if}}
+                        {{#if project.CAPACITY.PIPELINE}}
+                            <p>
+                            <h5 class="search-result-item-heading">Pipeline Capacity</h5>
+                            {{numberWithCommas project.CAPACITY.PIPELINE.VOLUME}} {{project.CAPACITY.PIPELINE.UNITS.UNIT_DESC}}
+                            </p>
+                        {{/if}}
+                        {{#if project.COST.VALUE}}
+                            <p>
+                            <h5 class="search-result-item-heading">Estimated Project Cost</h5>
+                            {{numberWithCommas project.COST.VALUE}} {{project.COST.UNITS.UNIT_DESC}}
+                            </p>
+                        {{/if}}
+                        {{#if project.KICKOFF_DATE}}
+                            <p>
+                            <h5 class="search-result-item-heading">Kickoff Date</h5>
+                            {{formatMongoDate project.KICKOFF_DATE}}
+                            </p>
+                        {{/if}}
+                        {{#if project.COMPLETION_DATE}}
+                            <p>
+                            <h5 class="search-result-item-heading">Completion Date</h5>
+                            {{formatMongoDate project.COMPLETION_DATE}}
+                            </p>
+                        {{/if}}
+                        {{#if project.ENTITY_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Parent Entities</h5>
+                            {{#each project.ENTITY_ID}}
+                                <a href="../c/entity?entity={{_id}}" target="_blank">{{ENTITY_NAME}}</a>
+                                {{#if ../../../if_editor}}
+                                    <a class="description" href="../../editorial/entities?entity_id={{_id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                {{/if}}
+                                <br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.ASSET_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Asset</h5>
+                            {{#each project.ASSET_ID}}
+                                <a href="../c/asset?asset={{this._id}}" target="_blank">{{this.ASSET_NAME}}</a>
+                                {{#if ../../../if_editor}}
+                                    <a class="description" href="../../editorial/assets?asset_id={{this._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                {{/if}}
+                                <br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.RELATED_ENTITIES}}
+                            <p>
+                            <h5 class="search-result-item-heading">Related Entities</h5>
+                            {{#each project.RELATED_ENTITIES}}
+                                <a href="../c/entity?entity={{this._id}}" target="_blank">{{this.ENTITY_NAME}}</a>
+                                {{#if ../../../if_editor}}
+                                    <a href="../../editorial/entities?entity_id={{this._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                {{/if}}
+                                <br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.RELATED_ASSETS}}
+                            <p>
+                            <h5 class="search-result-item-heading">Related Assets</h5>
+                            {{#each project.RELATED_ASSETS}}
+                                <a href="../c/asset?asset={{this._id}}" target="_blank">{{this.ASSET_NAME}}</a>
+                                {{#if ../../../if_editor}}
+                                    <a href="../../editorial/assets?asset_id={{this._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                {{/if}}
+                                <br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.RELATED_PROJECTS}}
+                            <p>
+                            <h5 class="search-result-item-heading">Related Projects</h5>
+                            {{#each project.RELATED_PROJECTS}}
+                                <a href="../c/project?project={{this._id}}" target="_blank">{{this.PROJECT_NAME}}</a>
+                                {{#if ../../../if_editor}}
+                                    <a class="description" href="../../editorial/projects?project_id={{this._id}}" target="_blank"><span class="small"> (edit)</span></a>
+                                {{/if}}
+                                <br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.REGION_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Region</h5>
+                            {{project.REGION_ID.REGION_NAME}}
+                            </p>
+                        {{/if}}
+                        {{#if project.COUNTRY_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Country</h5>
+                            {{#each project.COUNTRY_ID}}
+                                {{COUNTRY_NAME}}<br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.STATE_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">State</h5>
+                            {{#each project.STATE_ID}}
+                                {{this.STATE_NAME}}<br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.PROVINCE_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Province</h5>
+                            {{#each project.PROVINCE_ID}}
+                                {{this.PROVINCE_NAME}}<br>
+                            {{/each}}
+                            </p>
+                        {{/if}}
+                        {{#if project.CAT_CLASS_ID}}
+                            <p>
+                            <h5 class="search-result-item-heading">Category</h5>
+                            {{project.CAT_CLASS_ID.CAT_CLASS_DESC}}<br>
+                            {{#if project.SUB_CAT_ID}}
+                                {{project.SUB_CAT_ID.SUB_CAT_DESC}}<br>
+                            {{/if}}
+                            </p>
+                        {{/if}}
+                        {{#if project.COMMERCIAL_START_UP}}
+                            <p>
+                            <h5 class="search-result-item-heading">Completion Date</h5>
+                            {{formatMongoDate project.COMMERCIAL_START_UP}}<br>
+                            </p>
+                        {{/if}}
+                        {{#if project.WEBSITE}}
+                            <p>
+                            <h5 class="search-result-item-heading">Source Website</h5>
+                            <a href="{{project.WEBSITE}}"  target="_blank">{{truncate project.WEBSITE 25}}</a>
+                            </p>
+                        {{/if}}
+                    </div>
+                    <div class="col-sm-3">
+                        {{#if changeLogs.formattedItems}}
+                            <h4 class="search-result-item-heading">Key Project Updates</h4>
+                            {{#each changeLogs.formattedItems}}
+                                <p>
+                                    <strong>{{formatMongoDate DATE}} - {{ITEM}}</strong><br>
+                                    Updated: {{checkDateAndFormat UPDATE}}<br>
+                                    Previous: {{checkDateAndFormat ORIGINAL}}
+                                </p>
+                            {{/each}}
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{{/each}}

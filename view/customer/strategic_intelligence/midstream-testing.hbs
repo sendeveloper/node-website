@@ -1,0 +1,98 @@
+<div class="body customer-buffer">
+    <h3 class="page-title">
+        <span class="fw-semi-bold">
+            {{username}}'s Portfolio
+        </span>
+    </h3>
+    <div class="col-md-12">
+        {{#if results.getRegions}}
+            <section class="widget">
+                <div class="body">
+                    <ul id="myTab" class="nav nav-tabs">
+                        {{#each results.getRegions}}
+                        {{!-- <li id="li-storageForecast" class="active"><a href="#storageForecast" data-toggle="tab" aria-expanded="true">test Name Expanded</a></li> --}}
+                            <li id="li-{{this._id}}" class="li-check {{#ifActive @index}}{{/ifActive}}" ><a href="#{{this._id}}" data-toggle="tab" aria-expanded="true">{{this.REGION_NAME}}</a></li>
+                        {{/each}}
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        {{#each results.portfolios}}
+                        {{!-- <div class="tab-pane fade active in" id="storageForecast" style="min-height: 320px;  min-width: 300px; margin: 0 auto"></div> --}}
+                            <div class="tab-pane fade {{#ifActiveIn @index}}{{/ifActiveIn}}" id="{{this._id}}">
+                                <strong>{{this.USER_PORTFOLIO_DESC}}</strong>
+                                <div class="dataTables_wrapper dataTables_paginate form-inline">
+                                    <table id="tbl-{{this._id}}" class="table table-striped table-hover" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Category</th>
+                                            <th>Sub Category</th>
+                                            <th>Title</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="portfolio-updates-table-body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </section>
+        {{else}}
+            Create a user portfolio here...
+
+        {{/if}}
+    </div>
+</div>  <!-- closing of div class body -->
+
+<!-- common libraries. required for every page-->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+<!-- data tables -->
+<script src="../lib/datatables/jquery.dataTables.js"></script>
+
+<!-- Criterion Specific Items-->
+<script type="text/javascript" src="../js/criterion-charts.js"></script>
+
+<script src="../lib/select2/select2.js"></script>
+<script type="text/javascript" src="../js/my-folder-widget.js"></script>
+
+
+<script>
+
+    $(document).ready(function() {
+        loadFirstTable();
+        portfolioDataTables('#tbl-', item);
+    });
+
+    $('.li-check').click(function() {
+        var item = this.id.substring(3,27);
+        portfolioDataTables('#tbl-' + item, item)
+    });
+
+    function loadFirstTable(){
+        var item = document.getElementsByClassName('active in');
+        //alert ("this should be the load first table id: " + JSON.stringify(item));
+        portfolioDataTables('#tbl-' + item[0].id, item[0].id)
+    }
+
+
+    function launchSnippetModal(id){
+        //alert("This is the launchSnippetModal: " + id);
+        $.get('../c/snippet?snippet_id=' + id + '&render=singleSnippet', function(data) {
+            $('#news-content').html(data);
+            attachMyFoldersHandlers($('#news-content .myfolder-selectors'));
+        });
+    }
+
+    function launchFercModal(id){
+        //alert("This is the launchFercModal: " + id);
+        $.get('../si_ferc/highlight?highlight_id=' + id, function(data) {
+            $('#news-content').html(data);
+            attachMyFoldersHandlers($('#news-content .myfolder-selectors'));
+        });
+    }
+
+
+</script>

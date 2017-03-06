@@ -1,0 +1,906 @@
+<style>
+
+    .projectUpdateTable{
+        font-family: Helvetic Neue, Helvetica, Arial; font-size: 10px; line-height: 13px;
+    }
+    .newSummary{
+        padding: 0 0 0 0;
+    }
+    .projectUpdateTable, ul{
+        list-style-type: circle;
+        padding: 0 0 0 15px;
+    }
+    .projectUpdateHeader {
+        font-weight: 600; font-size: 13px; color: darkblue; padding: 0 0 0 0; text-decoration: underline;
+    }
+    .projectUpdateTd {
+        font-weight: 600; color: black;
+    }
+    .keyChanges{
+        font-family: Helvetic Neue, Helvetica, Arial; font-size: 10px; line-height: 13px;
+    }
+    body{
+        font-family: Helvetic Neue, Helvetica, Arial;
+    }
+
+    .updatesProject{
+        font-weight: 600; font-size: 13px; color: darkblue;
+    }
+    .updatesImpact{
+        font-weight: 600; text-align: center; color: #017dc7; font-size:13px;
+    }
+    .updatesDetails{
+        text-align: center; font-size: 11px;
+    }
+    .updatesCommentary{
+        font-size: 11px;
+    }
+</style>
+
+<div class="content container customer-buffer">
+    <div class="col-md-9">
+        <h2 class="page-title">Weekly {{results.defaults.target}} Project Updates - {{formatDate results.endDate "M/D/YYYY"}}</h2>
+    </div>
+    <div class="col-md-3" id="publisher-div">
+        <div class="form-group">
+            <label class="col-md-3 label-color">Find Date</label>
+            <div class="col-md-9">
+                <input type="date" id="query-highlight-date" name="date" class="form-control" onchange="dateChange()" value="{{results.today}}">
+                {{#if if_editor}}<small><a href="" id="pub_id" target="_blank">(publisher)</a></small>{{/if}}
+            </div>
+        </div>
+    </div>
+{{!-- summary project updates --}}
+    <div>
+        <h3>Summary Project Updates</h3>
+        <table class="projectUpdateTable">
+            <thead>
+            <tr>
+                <td>
+                    Project
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Project Cancelled</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Project Cancelled"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Potential Project Delay</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Potential Project Delay"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Project Delay</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Project Delay"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Project Timelines Updated</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Project Timeline Updated"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Commercial Operation Start</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Commercial Operation Start"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Requested authorization to place in service</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Requested authorization to place in service"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Potential Construction Delay</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Potential Construction Delay"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Construction Start</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Construction Start"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Pre-Construction Activities</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Pre-Construction Activities"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Granted Notice to Proceed</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Granted Notice to Proceed"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Requested Notice To Proceed</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Requested Notice To Proceed"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Certificate of Public Convenience and Necessity Issued</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Certificate of Public Convenience and Necessity Issued"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Received FERC Authorization to Construct LNG Terminal</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Received FERC Authorization to Construct LNG Terminal"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Draft Implementation Plan Submitted</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Draft Implementation Plan Submitted"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Draft Resource Report Submitted</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Draft Resource Report Submitted"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Environmental Assessment Approve</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Environmental Assessment Approve"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Environmental Assessment Released for Review</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Environmental Assessment Released for Review"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">FERC EIA Request</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "FERC EIA Request"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">FERC Pre-Filing Request</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "FERC Pre-Filing Request"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Presidential Permit Granted</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Presidental Permit Granted"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Construction Updates</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Construction Update"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            <tr>
+                <td>
+                    <span class="projectUpdateHeader">Project Updates</span>
+                </td>
+            </tr>
+            {{#each results.newItems}}
+                {{#ifCond impact "==" "Project Update"}}
+                    <tr>
+                        <td>
+                            &#8226 <span class="projectUpdateTd">{{PROJECT_NAME}}</span> - {{region.REGION_NAME}}
+                        </td>
+                    </tr>
+                {{/ifCond}}
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+{{!-- Key Changes --}}
+    <div>
+        <h3>Key Changes</h3>
+        <table>
+            <thead>
+                <th>
+                    Project Name
+                </th>
+                <th>
+                    Region Name
+                </th>
+                <th>
+                    Item
+                </th>
+                <th>
+                    Updated
+                </th>
+                <th>
+                    Original
+                </th>
+            </thead>
+            <tbody>
+            {{#each results.changes.allChanges}}
+                <tr>
+                    <td class="updatesProject">
+                        {{PROJECT_NAME}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{REGION_NAME}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{ITEM}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{formatKeyChanges UPDATE}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{formatKeyChanges ORIGINAL}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Test</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+{{!-- new projects --}}
+    <div>
+        <h3>
+            New Projects
+        </h3>
+        <table class="keyChanges">
+            <thead>
+                <th>
+                    Project Name
+                </th>
+                <th>
+                    Region
+                </th>
+                <th>
+                    Completion Date
+                </th>
+                <th>
+                    Capacity
+                </th>
+            </thead>
+            <tbody>
+            {{#each results.newProjects}}
+                <tr>
+                    <td class="updatesProject">
+                        {{PROJECT_NAME}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{REGION_ID.REGION_NAME}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{formatMongoDate COMPLETION_DATE}}
+                    </td>
+                    <td class="updatesDetails">
+                        {{numberWithCommas CAPACITY.PIPELINE.VOLUME}} {{CAPACITY.PIPELINE.UNITS.UNIT_DESC}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="updatesCommentary">
+                        {{PROJECT_DESC}}
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+{{!-- Project Commentary --}}
+    <div>
+        <h3>Key Projects</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.keyProjects.COMMENTARY}}
+        </p>
+        <h3>Northeast</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.northeast.COMMENTARY}}
+        </p>
+        <h3>Southeast</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.southeast.COMMENTARY}}
+        </p>
+        <h3>South Central</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.southCentral.COMMENTARY}}
+        </p>
+        <h3>Midwest</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.midwest.COMMENTARY}}
+        </p>
+        <h3>Rockies</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.rockies.COMMENTARY}}
+        </p>
+        <h3>West</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.west.COMMENTARY}}
+        </p>
+        <h3>Canada</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.canada.COMMENTARY}}
+        </p>
+        <h3>Mexico</h3>
+        <p style="white-space: pre-line">
+            {{results.commentary.mexico.COMMENTARY}}
+        </p>
+    </div>
+{{!-- Regional Project Updates --}}
+    <div class="body">
+        <div class="col-md-12">
+            {{#if results.updatesNortheast}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">Northeast Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesNortheast}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesSoutheast}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">Southeast Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesSoutheast}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesSouthCentral}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">South Central Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesSouthCentral}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesMidwest}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">Midwest Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesMidwest}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesRockies}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">Rockies Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesRockies}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesWest}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">West Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesWest}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesCanada}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">Canada Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesCanada}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+            {{#if results.updatesMexico}}
+                <section class="widget">
+                    <br><span class="projectUpdateHeader">Mexico Project Updates</span>
+                    <table class="projectUpdateTable">
+                        <thead >
+                        <tr style="font-size: 13px;">
+                            <th style="border: 1px solid black"><strong>Project</strong></th>
+                            <th style="border: 1px solid black"><strong>Impact</strong></th>
+                            <th style="border: 1px solid black"><strong>Date</strong></th>
+                            <th style="border: 1px solid black"><strong>Region</strong></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each results.updatesMexico}}
+                            <tr >
+                                <td class="updatesProject">
+                                    {{this.PROJECT_NAME}}
+                                </td>
+                                <td class="updatesImpact">
+                                    {{impact}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{formatMongoDate this.date}}
+                                </td>
+                                <td class="updatesDetails">
+                                    {{this.region.REGION_NAME}}
+                                </td>
+                            </tr>
+                            <tr >
+                                <td class="updatesCommentary">
+                                    &#8226
+                                    {{#ifCond source "==" "FERC Highlights"}}
+                                        {{this.summary}}
+                                    {{/ifCond}}
+                                    {{#ifCond source "==" "Snippets"}}
+                                        {{this.NCO_SNIPPET_TITLE}}
+                                    {{/ifCond}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+            {{/if}}
+
+        </div>
+    </div>
+</div>
+<div id='spinner' class='spinner'></div>
+
+
+<!-- common libraries -->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+<!-- Criterion Specific Items-->
+<script type="text/javascript" src="../js/criterion-charts.js"></script>
+<script type="text/javascript" src="../js/criterion-select.js"></script>
+
+<!-- Select2 -->
+<script src="../lib/select2/select2.js"></script>
+
+
+<script>
+    $(document).ready(function($) {
+        getPath();
+    });
+
+    function getPath(){
+        var search;
+        if (window.location.search != ""){
+            search = window.location.href + "&publisher=true"
+        } else {
+            search = window.location.href + "?publisher=true"
+        }
+        document.getElementById("pub_id").href=search;
+    }
+
+
+    function dateChange(){
+        var newDate = document.getElementById("query-highlight-date").value;
+        var url = window.location.origin + window.location.pathname + "?endDate=" + newDate;
+        window.location.replace(url);
+    }
+
+
+</script>
+
+

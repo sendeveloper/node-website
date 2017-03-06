@@ -1,0 +1,15 @@
+{{#if results}}
+    <section class="widget">
+        <h4 class="item-heading">Customer Files</h4>
+        <table class="table table-striped">
+            {{#each results}}
+                <tr>
+                    <td>
+                        <a href="{{loc}}" target="_blank">{{filename}}</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </table>
+    </section>
+{{/if}}
+

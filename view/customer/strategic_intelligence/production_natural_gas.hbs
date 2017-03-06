@@ -1,0 +1,619 @@
+<style>
+    .spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+    }
+</style>
+
+
+<div class="body customer-buffer">
+    <div class="body">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="page-title"><span class="fw-semi-bold">Natural Gas Production</span></h3>
+            </div>
+            <div class="col-md-6">
+                <div class="div-75-right">
+                    <span class="label-color size-12">Search Entities:</span> <input type="hidden" id="query-entities-select" name="ENTITY_ID" class="search-50"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <section class="widget">
+                <div class="body">
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li id="li-summary" class="li-check active in" ><a href="#summary" data-toggle="tab" aria-expanded="true">Summary</a></li>
+                        <li id="li-united-states" class="li-check" ><a href="#united-states" data-toggle="tab" aria-expanded="true">United States</a></li>
+                        <li id="li-canada" class="li-check" ><a href="#canada" data-toggle="tab" aria-expanded="true">Canada</a></li>
+                        {{!--<li id="li-company-list" class="li-check" ><a href="#company-list" data-toggle="tab" aria-expanded="true">Company List</a></li>
+                        <li id="li-ma-list" class="li-check" ><a href="#ma-activity" data-toggle="tab" aria-expanded="true">M&A Activity</a></li>
+                        <li id="li-production-projects" class="li-check" ><a href="#production-projects" data-toggle="tab" aria-expanded="true">Projects</a></li>
+                        <li i="li-capital-spending" class="li-check" ><a href="#capital-spending" data-toggle="tab" aria-expanded="true">Capital Spending</a></li>--}}
+                    </ul>
+                    <div id="tabs-div" class="tab-content">
+                        <div class="tab-pane fade active in" id="summary">
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <h3 class="item-heading">Production Summary - {{formatMongoDate results.keyProjects.REPORT_DATE}}</h3>
+                                    <span class="snippet-body">{{results.summary.COMMENTARY}}</span>
+                                </section>
+                                <section class="widget">
+                                    <h3 class="item-heading">Criterion News</h3>
+                                    {{#each results.summarySnippets}}
+                                        <section class="search-result-item">
+                                            <p>
+                                                <strong>
+                                                    <a href="../../c/snippet?snippet_id={{_id}}" target="_blank">{{formatMongoDate ORIGINAL.ARTICLE_DATE}} - {{NCO_SNIPPET_TITLE}}</a>
+                                                </strong>
+                                                <br>
+                                            <span class="search-result-item-content">
+                                                {{truncate NCO_SNIPPET_BODY 150}}
+                                            </span>
+                                            </p>
+                                        </section>
+                                    {{/each}}
+                                </section>
+                            </div>
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <div id="na-production-chart"></div>
+                                </section>
+                                <section class="widget">
+                                    <div id="na-monthly-production-chart"></div>
+                                </section>
+                                <section class="widget">
+                                    <div id="price-continuation-summary"></div>
+                                </section>
+                                <section class="widget">
+                                    <div id="duc-summary-chart"></div>
+                                </section>
+                                {{!--
+                                <section class="widget">
+                                    <h4>Drilled But Uncompleted Wells</h4>
+                                    <table id="ducWells" class="table table-striped" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Company</th>
+                                                <th>DUC</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </section>
+                                --}}
+                            </div>
+                            <div class="col-md-12" id="production-summary-div">Loading.....</div>
+                        </div>
+                        <div class="tab-pane fade " id="united-states">
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <h3 class="item-heading">United States Highlights - {{formatMongoDate results.united-states.REPORT_DATE}}</h3>
+                                    <span class="snippet-body">{{results.united-states.COMMENTARY}}</span>
+                                </section>
+                            </div>
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <div id="us-production-chart"></div>
+                                </section>
+                                <section class="widget">
+                                    <div id="us-monthly-production-chart"></div>
+                                </section>
+                                {{!--<section class="widget">
+                                    <div id="us-duc-chart"></div>
+                                </section>--}}
+                            </div>
+                            <div class="col-md-12">
+                                <section class="widget">
+                                    <div id="us-avg-qr-chg"></div>
+                                </section>
+                                <section class="widget">
+                                    <div id="us-avg-yr-chg"></div>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="canada">
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <h3>Canadian Highlights - {{formatMongoDate results.canada.REPORT_DATE}}</h3>
+                                    <span class="snippet-body">{{results.canada.COMMENTARY}}</span>
+                                </section>
+                            </div>
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <div id="ca-production-chart"></div>
+                                </section>
+                                <section class="widget">
+                                    <div id="ca-monthly-production-chart"></div>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="company-list">
+                            <div class="col-md-4">
+                                <form class="form-horizontal" role="form" method="post" action="" id="company-list-form">
+                                    <fieldset>
+                                        <div class="row">
+                                            <section class="widget">
+                                                <h3 class="item-heading">Filter Projects</h3>
+                                                <legend class="section">Primary Filters</legend>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Project Status</label>
+                                                    <div class="col-sm-9">
+                                                        <select id="query-status-select"
+                                                                size="1"
+                                                                class="form-control"
+                                                                name="PROJECT_STATUS_ID">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Entity Name</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" id="query-entities-select" name="ENTITY_ID" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Asset Name</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" id="query-assets-select" name="ASSET_ID" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Project Name</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" id="query-project-select" name="PROJECT_ID" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Region</label>
+                                                    <div class="col-sm-9">
+                                                        <select id="query-regions-select"
+                                                                size="1"
+                                                                class="form-control"
+                                                                name="REGION_ID">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Country</label>
+                                                    <div class="col-sm-9">
+                                                        <select id="query-countries-select"
+                                                                size="1"
+                                                                class="form-control"
+                                                                name="COUNTRY_ID">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <legend class="section">Completion Date Filter</legend>
+                                                <div class="form-group">
+                                                    <label class="col-sm-6 control-label"> From Date</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="date" id="COMPLETION_DATE" name="BEGIN_DATE" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-6 control-label">To Date</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="date" id="COMPLETION_DATE" name="ENDING_DATE" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <section class="widget">
+                                                    <div class="row">
+                                                        <div class="col-sm-offset-4 col-sm-8">
+                                                            <div class="btn-toolbar">
+                                                                <button type="submit" class="btn btn-primary">Search</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-8">
+                                <h4>Advanced Search</h4>
+                                <section class="widget">
+                                    <div id="advanced-search-chart"></div>
+                                    {{!--<table id="capacityAggregation" class="table table-striped table-hover" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Completion Month</th>
+                                            <th>Volume (in MMcf/d)</th>
+                                        </tr>
+                                        </thead>
+                                    </table>--}}
+                                </section>
+                            </div>
+                            <div class="col-md-12">
+                                <section class="widget">
+                                    <table id="projectDetails" class="table table-striped table-hover" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Completion Date</th>
+                                            <th>Region</th>
+                                            <th>Project Status</th>
+                                            <th>Project Name</th>
+                                            <th>Project Type</th>
+                                            {{#if if_editor}}
+                                                <th>Key Project</th>
+                                                <th>Original Volumes</th>
+                                                <th>Original Units</th>
+                                            {{/if}}
+                                            <th>Normalized Volumes</th>
+                                            <th>Normalized Units</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="ma-activity">
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <h3>Mergers & Acquisitions - {{formatMongoDate results.ma-activity.REPORT_DATE}}</h3>
+                                    <span class="snippet-body">{{results.ma-activity.COMMENTARY}}</span>
+                                </section>
+                            </div>
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <div id="ma-chart"></div>
+                                </section>
+                            </div>
+                            <div class="col-md-12" id="ma-results-div">Loading.....</div>
+                        </div>
+                        <div class="tab-pane fade " id="production-projects">
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <h3>Production Projects - {{formatMongoDate results.projects.REPORT_DATE}}</h3>
+                                    <span class="snippet-body">{{results.projects.COMMENTARY}}</span>
+                                </section>
+                            </div>
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <div id="production-projects-chart"></div>
+                                </section>
+                            </div>
+                            <div class="col-md-12" id="production-projects-results-div">Loading.....</div>
+                        </div>
+                        <div class="tab-pane fade " id="capital-spending">
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <h3>Capital Spending - {{formatMongoDate results.capex.REPORT_DATE}}</h3>
+                                    <span class="snippet-body">{{results.capex.COMMENTARY}}</span>
+                                </section>
+                            </div>
+                            <div class="col-md-6">
+                                <section class="widget">
+                                    <div id="capital-spending-chart"></div>
+                                </section>
+                            </div>
+                            <div class="col-md-12" id="captial-spending-results-div">Loading.....</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div id='spinner' class='spinner'></div>
+
+{{!--
+<div id="project-results-table"></div>
+<div id="data-results-table"></div>
+--}}
+
+<!-- common libraries -->
+<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="../lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+
+<!-- select2 -->
+<script src="../lib/select2/select2.js"></script>
+
+<!-- Criterion Specific Items-->
+<script type="text/javascript" src="../js/criterion-select.js"></script>
+<script type="text/javascript" src="../js/criterion-charts.js"></script>
+
+<!-- data tables -->
+<script src="../lib/datatables/jquery.dataTables.js"></script>
+
+<!-- Highcharts -->
+<script src="../lib/highcharts/highcharts.4.2.5.min.js"></script>
+
+<!-- Moment -->
+<script src="../lib/moment/moment.js"></script>
+
+<!-- spinner-->
+<script src="../lib/spin/spin.min.js"></script>
+
+
+<script name="General">
+    var openQuery = "BEGIN_DATE=" + addDays(Date.now(),-60);
+    var targetYear = new Date().getUTCFullYear() - 2;
+    $(document).ready(function($){
+        UniversalSelect('#query-status-select','PROJECT_STATUS_DESC','../api/v3/misc_project_statuses?sort=PROJECT_STATUS_DESC','',0);
+        UniversalSelect3('#query-entities-select','ENTITY_NAME','../api/v3/entities',[]); //
+        UniversalSelect3('#query-assets-select','ASSET_NAME','../api/v3/assets',[]); //
+        UniversalSelect3('#query-project-select','PROJECT_NAME','../api/v3/projects',[]); //
+        UniversalSelect('#query-regions-select','REGION_NAME','../api/v3/geo_regions?sort=REGION_NAME', '', 1);
+        UniversalSelect('#query-countries-select','COUNTRY_NAME', '../api/v3/geo_countries?sort=COUNTRY_NAME', '', 1);
+        UniversalSelect2Single('#query-projects-select','PROJECT_NAME','../api/v3/projects','');
+        spinner_div = $('#spinner').get(0);
+
+        // Summary Page
+        ducsTable('ae646e70-4487-11e6-9176-2715725bd43b','#ducWells');
+        HighChartMaxPostDateMaxVersionKeyValue('ae646e70-4487-11e6-9176-2715725bd43b','#duc-summary-chart', 'Drilled But Uncompleted Wells', 'Derived From Pipeline Flows', 'columnCategory');
+        HighChartMaxPostDateMaxVersionMulti('ddbb3770-4870-11e6-9900-33c8ed27ba8a,22f68b40-1bcc-11e6-afe6-63892c2ebbf7,51e4b440-1bcc-11e6-afe6-63892c2ebbf7,04D512D0-1BCC-11E6-AFE6-63892C2EBBF7','#na-production-chart', 'North American Natural Gas Production', '', 'lineDefault', moment().set('year', targetYear, 'month', 1, 'day', 1));
+        HighChartMaxPostDateMaxVersionMulti('034fbb00-4871-11e6-9900-33c8ed27ba8a','#na-monthly-production-chart', 'North American Monthly Natural Gas Production', '', 'lineDefault', '');
+        HighChartMaxPostDateMaxVersion('66bd7fb0-d0f8-11e5-8352-d125961f655b','#price-continuation-summary', 'NYMEX Natural Gas Continuation', '', 'lineDefault', moment().set('year', new Date().getUTCFullYear() - 2, 'month', 1, 'day', 1));
+    });
+
+    var opts = {
+        lines: 11, // The number of lines to draw
+        length: 15, // The length of each line
+        width: 10, // The line thickness
+        radius: 30, // The radius of the inner circle
+        corners: 1, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        direction: 1, // 1: clockwise, -1: counterclockwise
+        color: '#FFF', // #rgb or #rrggbb
+        speed: 0.6, // Rounds per second
+        trail: 60, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: false, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: 'auto', // Top position relative to parent in px
+        left: 'auto' // Left position relative to parent in px
+    };
+
+    var spinner = null;
+    var spinner_div = 0;
+
+/*
+    function LoadChanges(date){
+        if(spinner == null) {
+            spinner = new Spinner(opts).spin(spinner_div);
+        } else {
+            spinner.spin(spinner_div);
+        }
+        try {
+            //$('#spinner').show();
+            function query(region, date){
+                var strDate = "";
+                if (typeof date !== 'undefined'){
+                    strDate = '&endDate=' + date;
+                }
+                return '../si_production/lng_changes?region=' + region + strDate;
+            }
+            /!*
+                        //advanced-search
+                        $.get(query('advanced-search', date), function(data) {
+                        });
+            *!/
+            $.get(query('united-states', date), function(data) {
+                console.log("US Data: " + JSON.stringify(data));
+                $('#united-states-updates-div').html(data);
+                spinner.stop(spinner_div);
+            });
+            $.get(query('canada', date), function(data) {
+                console.log("Canada Data: " + JSON.stringify(data));
+                $('#canada-updates-div').html(data);
+            });
+            $.get(query('production-projects', date), function(data) {
+                console.log("Production Projects: " + JSON.stringify(data));
+                $('#production-projects-updates-div').html(data);
+            });
+        }catch (err){
+            spinner.stop(spinner_div);
+        }
+
+    }
+*/
+
+    //Load Pages on click
+    $('#li-summary').click(function(){
+        //LoadChanges('');
+    });
+    $('#li-united-states').click(function(){
+        // United States
+        HighChartMaxPostDateMaxVersionKeyValue('ae646e70-4487-11e6-9176-2715725bd43b','#us-duc-chart', 'Drilled But Uncompleted Wells', 'Derived From Pipeline Flows', 'columnCategory');
+        HighChartMaxPostDateMaxVersionMulti('cbde06b0-1bcd-11e6-afe6-63892c2ebbf7,3b127d30-1bca-11e6-88b8-73425736a8c9,7dc56110-1bca-11e6-88b8-73425736a8c9,360015c0-4869-11e6-9900-33c8ed27ba8a','#us-production-chart', 'United States Natural Gas Production', '', 'lineDefault', moment().set('year', targetYear, 'month', 1, 'day', 1));
+        HighChartMaxPostDateMaxVersionMulti('48f91d70-1bcd-11e6-afe6-63892c2ebbf7,360015c0-4869-11e6-9900-33c8ed27ba8a','#us-monthly-production-chart', 'United States Natural Gas Production', '', 'lineDefault', moment().set('year', targetYear, 'month', 1, 'day', 1));
+        HighChartMaxPostDateMaxVersionKeyValue('b6700120-494a-11e6-9136-ab38cc3df439','#us-avg-qr-chg', 'Quarterly Changes in Production', 'Natural Gas', 'columnCategory');
+        HighChartMaxPostDateMaxVersionKeyValue('fb0459c0-494b-11e6-9136-ab38cc3df439','#us-avg-yr-chg', '1Q16-4Q16 Changes in Production', 'Natural Gas', 'columnCategory');
+    });
+    $('#li-canada').click(function(){
+        HighChartMaxPostDateMaxVersionMulti('9d513750-178a-11e6-971a-25e9a2c30ebb,4884df30-1bca-11e6-88b8-73425736a8c9,01594470-1bca-11e6-88b8-73425736a8c9,899e8570-1bca-11e6-88b8-73425736a8c9','#ca-production-chart', 'Canadian Natural Gas Production', '', 'lineDefault', moment().set('year', targetYear, 'month', 1, 'day', 1));
+        HighChartMaxPostDateMaxVersionMulti('9d513750-178a-11e6-971a-25e9a2c30ebb,4884df30-1bca-11e6-88b8-73425736a8c9','#ca-monthly-production-chart', 'Canadian Natural Gas Production', '', 'lineDefault', moment().set('year', targetYear, 'month', 1, 'day', 1));
+    });
+    $('#li-ma-activity').click(function(){
+        if (document.getElementById("ma-activity-results-div").innerHTML == "Loading.....") {
+            $.get('../si_production/ng_production?type=ma-activity', function (data) {
+                $('#production-projects-results-div').html(data);
+            });
+            chartSummary('type=ma-activity&STATUS=active', '#ma-activity-chart');
+        }
+    });
+    $('#li-production-projects').click(function(){
+        if (document.getElementById("production-projects-results-div").innerHTML == "Loading.....") {
+            $.get('../si_production/ng_production?type=projects', function (data) {
+                $('#production-projects-results-div').html(data);
+            });
+            chartSummary('type=projects&STATUS=active', '#production-projects-chart');
+        }
+    });
+    $('#li-capital-spending').click(function(){
+        if (document.getElementById("capital-spending-results-div").innerHTML == "Loading.....") {
+            $.get('../si_production/ng_production?type=capex', function (data) {
+                $('#capital-spending-results-div').html(data);
+            });
+            chartSummary('type=capex&STATUS=active', '#capital-spending-chart');
+        }
+    });
+
+    // This runs the advanced Search
+    $('#company-list-form').submit(function(evt) {
+        evt.preventDefault();
+        var query = $(this).serialize();
+        //aggregateTable('#capacityAggregation', query);
+        projectDetails(query);
+        chartSummary(query + "&type=advanced-search", '#advanced-search-chart');
+    });
+
+    // Datatables queries and items
+    function aggregateTable(target, query){
+        var newQuery = query + "&aggregateData=true";
+        $.get('../si_production/lng_aggregate_data?', newQuery, function(data) {
+            $(target).dataTable( {
+                "destroy": true
+                , data: data
+                , "order": [[ 0, "asc" ]]
+                , columns: [
+                    { data : "key" },
+                    { data: "values" }
+                ]
+            } );
+        });
+    }
+    function projectDetails(query){
+        var newQuery = query + "&projectDetails=true";
+        $.get('../si_production/lng_aggregate_data?', newQuery, function(data) {
+            $('#projectDetails').dataTable( {
+                "destroy": true
+                , data: data.getProjectDetails
+                , "order": [[ 0, "asc" ]]
+                , "pageLength": 25
+                , "lengthMenu": [ 25, 50, 200 ]
+                , columns: [
+                    { data : "COMPLETION_DATE" || "" }
+                    , { data: "REGION_ID.REGION_NAME" || "" }
+                    , { data: "PROJECT_STATUS_ID.PROJECT_STATUS_DESC" || "" }
+                    , { data: "PROJECT_NAME_URL"}
+                    , { data: "PROJECT_TYPE_ID.PROJECT_TYPE_DESC" || "" }
+                    {{#if if_editor}}
+                        , { data: "KEY_PROJECT" || "" }
+                        , { data: "CAPACITY.PIPELINE.VOLUME" || "" }
+                        , { data: "CAPACITY.PIPELINE.UNITS.UNIT_DESC" || "" }
+                    {{/if}}
+                    , { data: "NEW_UNITS_VOLUMES.value" || "" }
+                    , { data: "NEW_UNITS_VOLUMES.targetUnits" || "" }
+                ]
+            } );
+        });
+    }
+
+
+    // highcharts items
+    function chartSummary(query, target){
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','
+            }
+        });
+        var newQuery = query + "&highCharts=true";
+        $.get('../si_production/lng_aggregate_data?', newQuery, function(data) {
+            var newData = [];
+            data.data.forEach(function(d){
+                var testDate = new Date(d.key);
+                newData.push([Date.UTC(testDate.getFullYear(), testDate.getMonth(),1), d.values])
+            });
+            $(target).highcharts({
+                series: [{
+                    name: "Projects"
+                    , type: 'area'
+                    , data : newData
+                }],
+                xAxis: {
+                    type: 'datetime'
+                    , autoRotation : 90
+                },
+                yAxis: {
+                    visible: true
+                    , title : {
+                        text : "Capacity in " + data.units
+                    },
+                    labels : {
+                        formatter: function() {
+                            result = this.value;
+                            if (this.value > 1) { result = Math.floor(this.value / 1000)}
+                            return result.toFixed(1);
+                        }
+                    }
+                },
+                tooltip:{
+                    enabled: true
+                    , valueSuffix: " MMcf/d"
+                    /*
+                                        , formatter: function() {
+                                            result = this.y;
+                                            if (this.y > 1000) { result = Math.floor(this.y / 1000)}
+                                            return result.toFixed(1) + " " + data.units;
+                                        }
+                                        , dateTimeLabelFormats : {
+                                            month:"%B %Y"
+                                        }
+                                        , headerFormat : 'New Capacity - '
+                    */
+                },
+                title: {
+                    text: data.title
+                },
+                subtitle: {
+                    text: data.subTitle
+                },
+                legend: {
+                    enabled: false
+                },
+                credits : {
+                    text : "Source: Criterion Research"
+                    , position: {
+                        align : 'left'
+                        , verticalAlign: 'bottom'
+                        , x: 10
+                        , y: -5
+                    }
+                    , href: "https://criterionrsch.com"
+                }
+
+            });
+        });
+    }
+
+
+    // the days back for the original query
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    // runs the query search at the top of the page
+    var $eventSelect = $("#query-entities-select");
+    $eventSelect.on("change", function (e) { redirect("change"); });
+
+    function redirect (name, evt) {
+        var id = document.getElementById("query-entities-select").value;
+        var query = '../c/entity?entity=' + document.getElementById("query-entity-select").value;
+        window.open(query);
+    }
+
+
+    // Weekly Changes Date Change
+    function dateChange(){
+        var newDate = document.getElementById("query-highlight-date").value;
+        LoadChanges(newDate);
+    }
+
+    // This could be for the loading.... item
+    function loadingScript(target){
+        i = 0;
+        setInterval(function() {
+            i = ++i % 4;
+            $(target).html("Loading " + Array(i+1).join("."));
+        }, 800);
+    }
+
+
+</script>
+
+
